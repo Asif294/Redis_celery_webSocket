@@ -20,3 +20,10 @@ class ProductListView(APIView):
     
 
 
+from django.http import HttpResponse
+from .tasks import send_welcome_email
+
+def register_user(request):
+    username = "Asif"
+    send_welcome_email.delay(username)  # background এ task run হবে
+    return HttpResponse("Registration successful! Email will be sent shortly.")
