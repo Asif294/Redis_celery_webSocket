@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     "channels",
+    "django_celery_results",
 
 
 ]
@@ -168,3 +169,10 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'asifurrahman677294@gmail.com'
+EMAIL_HOST_PASSWORD = 'tiaq wtwm dkih dmlv' 

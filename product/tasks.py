@@ -1,10 +1,14 @@
 from celery import shared_task
-
-import time
+from django.core.mail import send_mail
+from django.conf import settings
 
 @shared_task
-def send_welcome_email(username):
-    print(f"Sending welcome email to {username}...")
-    time.sleep(5)  
-    print(f"Email sent to {username} ✅")
-    return f"Email sent successfully to {username}"
+def send_email_task(title, body, recipient):
+    send_mail(
+        subject=title,
+        message=body,
+        from_email=settings.EMAIL_HOST_USER,
+        recipient_list=[recipient],
+        fail_silently=False,
+    )
+    return "Email sent"

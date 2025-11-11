@@ -4,6 +4,12 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.core.cache import cache
 from .models import Products
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .serializers import MailSerializer
+from .tasks import send_email_task
+
 
 class ProductListView(APIView):
     def get(self,request):
@@ -19,11 +25,19 @@ class ProductListView(APIView):
         return Response(product)
     
 
-from celery_webSoket.celery import add
 
 
-def index(request):
-    print("Task started...")
-    result = add.delay(10, 20)  # arguments দেওয়া আছে
-    print("Task ID:", result.id)
-    return render(request, 'home.html')
+
+class SendMailAPIView(APIView):
+    def post(self, request):
+        serializer = MailSerializer(data=request.data)
+        if serializer.is_valid():
+            title = serializer.validated_data['title']
+            body = serializer.validated_data['body']
+            recipient = serializer.validated_data['recipient']
+            # Celery task call
+            send_email_task.delay(title, body, recipient)
+            return Response({"message": "Email is being sent in background"}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
