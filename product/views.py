@@ -19,11 +19,11 @@ class ProductListView(APIView):
         return Response(product)
     
 
+from celery_webSoket.celery import add
 
-from django.http import HttpResponse
-from .tasks import send_welcome_email
 
-def register_user(request):
-    username = "Asif"
-    send_welcome_email.delay(username)  # background এ task run হবে
-    return HttpResponse("Registration successful! Email will be sent shortly.")
+def index(request):
+    print("Task started...")
+    result = add.delay(10, 20)  # arguments দেওয়া আছে
+    print("Task ID:", result.id)
+    return render(request, 'home.html')
