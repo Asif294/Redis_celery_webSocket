@@ -35,9 +35,7 @@ class SendMailAPIView(APIView):
             title = serializer.validated_data['title']
             body = serializer.validated_data['body']
             recipient = serializer.validated_data['recipient']
-            # Celery task call
             send_email_task.delay(title, body, recipient)
             return Response({"message": "Email is being sent in background"}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
