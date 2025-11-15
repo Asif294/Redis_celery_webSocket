@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'product',
     'users',
+    'sendmail',
     'rest_framework',
     'rest_framework_simplejwt',
     "channels",
@@ -62,7 +63,7 @@ ROOT_URLCONF = 'celery_webSoket.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
